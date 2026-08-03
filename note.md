@@ -1,2 +1,13 @@
 GLAD
 Since there are many different versions of OpenGL drivers, the location of most of its functions is not known at compile-time and needs to be queried at run-time. It is then the task of the developer to retrieve the location of the functions he/she needs and store them in function pointers for later use. However this all can be avoided with the help of GLAD library.
+
+Clear
+Fill an entire graphics buffer with a known value before rendering
+
+Why must GLAD come first?
+glad.h provides all the OpenGL declarations (glClear, glViewport, GL_COLOR_BUFFER_BIT)
+glfw3.h sometimes includes the system's OpenGL headers if GLAD hasn't already been included
+
+Buffer
+Front Buffer  ---> Visible on the screen
+Back Buffer   ---> Hidden

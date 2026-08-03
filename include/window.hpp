@@ -12,6 +12,7 @@ struct window
 
   static void s_framebuffer_size_callback(GLFWwindow* window, int width, int height)
   {
+    // telling OpenGL the size of the window
     glViewport(0, 0, width, height);
   }
 
@@ -50,28 +51,37 @@ struct window
       glfwTerminate();
       return -1;
     }
+    // tells OpenGL to which window to use
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
+
       std::cout << "Failed to initialize GLAD\n";
       return -1;
     }
 
+    // When the framebuffer size change "s_framebuffer_size_callback" get called
     glfwSetFramebufferSizeCallback(window, s_framebuffer_size_callback);
 
+    // render loop
     while (!glfwWindowShouldClose(window))
     {
+
       // input
       processInput();
 
       // rendering
       glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+      // notice we don't pass any GLFWwindow* as parameter as in line 55 we already have told OpenGL to use this window
+      // take flag as the parameter
+      // GL_COLOR_BUFFER_BIT clear the color buffer
       glClear(GL_COLOR_BUFFER_BIT);
 
       // check and call events and swap the buffer
       glfwSwapBuffers(window);
-      glfwPollEvents();
+      glfwPollEvents(); // check if any event is triggered like - keyboard/mouse inputs
     }
 
     glfwDestroyWindow(window);
