@@ -1,6 +1,7 @@
 #pragma once
 
 #include "glad/glad.h"
+#include "object/triangle.hpp"
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -25,7 +26,7 @@ struct window
     }
   }
 
-  int createWindow()
+  int createWindow(void (*buffer)(float array[], size_t size))
   {
 
     if (!glfwInit())
@@ -54,6 +55,9 @@ struct window
     // tells OpenGL to which window to use
     glfwMakeContextCurrent(window);
 
+    // initialize GLAD
+    // glfwGetProcAddress - returns the address of an OpenGL function
+    // gladLoadGLLoader - asks for the addresses of every OpenGL function that your program might use
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
 
@@ -63,6 +67,8 @@ struct window
 
     // When the framebuffer size change "s_framebuffer_size_callback" get called
     glfwSetFramebufferSizeCallback(window, s_framebuffer_size_callback);
+
+    buffer(triangle::position, sizeof(triangle::position));
 
     // render loop
     while (!glfwWindowShouldClose(window))
@@ -81,7 +87,7 @@ struct window
 
       // check and call events and swap the buffer
       glfwSwapBuffers(window);
-      glfwPollEvents(); // check if any event is triggered like - keyboard/mouse inputs
+      glfwPollEvents(); // check if any event is triggered like - keyboard/mouse inputs and then processes it
     }
 
     glfwDestroyWindow(window);
